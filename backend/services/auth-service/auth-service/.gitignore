@@ -32,4 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-auth-service/src/main/resources/*.properties
+# Ignore only application.yml inside resources
+src/main/resources/application.yml
+
+
