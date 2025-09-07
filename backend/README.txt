@@ -1,7 +1,7 @@
 Instructions
 
 1. Before running the services, you have to create application.yml file, because it is set to git ignore
- to do that in the folder SwiftLogistics\backend\services\auth-service\auth-service\src\main\resources add a file called application.yml,
+ to do that in the folder SwiftLogistics\backend\services\auth-service\auth-service\src\main\resources add a file called application.yml, here ypu must create resource folder first
 
 and add this(you have to add your password and change username if needed),
 
