@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swiftlogistics/pages/home_page.dart';
+import 'package:swiftlogistics/pages/driver_dashboard.dart';
 import 'package:swiftlogistics/services/auth_service.dart';
 import 'package:swiftlogistics/pages/register_screen.dart';
 import 'dart:convert';
@@ -26,15 +26,15 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 
 
-                // Govi Mansala Title
+                // SwiftLogistics Title
                 Text.rich(
                   TextSpan(
-                    text: 'Govi ',
+                    text: 'Swift ',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     children: [
                       TextSpan(
-                        text: 'Mansala',
-                        style: TextStyle(color: Colors.green),
+                        text: 'Logistics',
+                        style: TextStyle(color: Colors.blue.shade600),
                       ),
                     ],
                   ),
@@ -133,10 +133,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       bool success = await AuthService.login(email, password);
 
                       if (success) {
-                        print('Login successful, navigating to HomePage...');
+                        print('Login successful, navigating to Driver Dashboard...');
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
+                          MaterialPageRoute(builder: (context) => const DriverDashboard()),
                         );
                       } else {
                         print('Login failed, showing snackbar...');
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
+                      backgroundColor: Colors.blue.shade600,
                       padding: EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         "Sign up",
-                        style: TextStyle(color: Colors.green[700]),
+                        style: TextStyle(color: Colors.blue.shade600),
                       ),
                     )
                   ],
