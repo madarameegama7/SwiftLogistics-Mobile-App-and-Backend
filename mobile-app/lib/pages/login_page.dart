@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swiftlogistics/pages/driver_dashboard.dart';
+import 'package:swiftlogistics/pages/main_navigation.dart';
 import 'package:swiftlogistics/services/auth_service.dart';
 import 'package:swiftlogistics/pages/register_screen.dart';
 import 'dart:convert';
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         print('Login successful, navigating to Driver Dashboard...');
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const DriverDashboard()),
+                          MaterialPageRoute(builder: (context) => const MainNavigation()),
                         );
                       } else {
                         print('Login failed, showing snackbar...');
