@@ -46,3 +46,13 @@ I have added this application.yml only to auth service yet because other service
 2. Now we have to setup database.
 
 For auth service create a database named, swiftlogistics_authdb. Then create the users table(the DB script is given in DB script/auth_serivce.txt)
+
+3. Open terminals for each service and run the services,
+eg: PS E:\SwiftLogistics\backend\services\auth-service\auth-service> .\mvnw clean spring-boot:run
+
+4. To run mobile app,
+PS E:\SwiftLogistics\mobile-app> flutter pub get
+PS E:\SwiftLogistics\mobile-app> flutter run -d chrome
+
+(path can vary with the location of your project in the PC)
+

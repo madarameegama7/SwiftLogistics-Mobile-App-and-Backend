@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swiftlogistics/pages/home_page.dart';
+import 'package:swiftlogistics/pages/main_navigation.dart';
 import 'package:swiftlogistics/services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -30,12 +30,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // Title
                 Text.rich(
                   TextSpan(
-                    text: 'Govi ',
+                    text: 'Swift ',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     children: [
                       TextSpan(
-                        text: 'Mansala',
-                        style: TextStyle(color: Colors.green),
+                        text: 'Logistics',
+                        style: TextStyle(color: Colors.blue.shade600),
                       ),
                     ],
                   ),
@@ -180,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       if (success) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (_) => HomePage()),
+                          MaterialPageRoute(builder: (_) => const MainNavigation()),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -189,7 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
+                      backgroundColor: Colors.blue.shade600,
                       padding: EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -213,7 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       child: Text(
                         "Log in",
-                        style: TextStyle(color: Colors.green[700]),
+                        style: TextStyle(color: Colors.blue.shade600),
                       ),
                     )
                   ],
