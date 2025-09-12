@@ -1,4 +1,3 @@
-import 'package:swiftlogistics/pages/onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swiftlogistics/pages/login_page.dart';
@@ -11,7 +10,6 @@ import 'package:swiftlogistics/pages/route_navigation_page.dart';
 import 'package:swiftlogistics/pages/package_delivery_page.dart';
 import 'package:swiftlogistics/pages/proof_of_delivery_page.dart';
 import 'package:swiftlogistics/pages/notifications_page.dart';
-import 'package:swiftlogistics/pages/settings_page.dart';
 import 'package:swiftlogistics/pages/settings_page.dart';
 
 void main() {

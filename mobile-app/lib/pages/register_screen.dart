@@ -3,6 +3,8 @@ import 'package:swiftlogistics/pages/main_navigation.dart';
 import 'package:swiftlogistics/services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -22,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
               
@@ -31,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Text.rich(
                   TextSpan(
                     text: 'Swift ',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     children: [
                       TextSpan(
                         text: 'Logistics',
@@ -58,13 +60,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     labelText: 'Full Name',
-                    labelStyle: TextStyle(color: Colors.green),
+                    labelStyle: const TextStyle(color: Colors.green),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -76,13 +78,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email address',
-                    labelStyle: TextStyle(color: Colors.green),
+                    labelStyle: const TextStyle(color: Colors.green),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -95,13 +97,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.green),
+                    labelStyle: const TextStyle(color: Colors.green),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     suffixIcon: IconButton(
@@ -126,13 +128,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _phoneController,
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
-                    labelStyle: TextStyle(color: Colors.green),
+                    labelStyle: const TextStyle(color: Colors.green),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -144,13 +146,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _addressController,
                   decoration: InputDecoration(
                     labelText: 'Address',
-                    labelStyle: TextStyle(color: Colors.green),
+                    labelStyle: const TextStyle(color: Colors.green),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -184,18 +186,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Registration failed')),
+                          const SnackBar(content: Text('Registration failed')),
                         );
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue.shade600,
-                      padding: EdgeInsets.symmetric(vertical: 14),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: Text('Register',
+                    child: const Text('Register',
                         style: TextStyle(fontSize: 16, color: Colors.black)),
                   ),
                 ),
@@ -206,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already have an account? "),
+                    const Text("Already have an account? "),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context); // back to login

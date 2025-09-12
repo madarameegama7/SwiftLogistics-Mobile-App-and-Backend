@@ -147,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 24),
 
           // Logout
-          Container(
+          SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _showLogoutDialog,

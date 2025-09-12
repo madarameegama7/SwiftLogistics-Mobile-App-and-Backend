@@ -3,6 +3,8 @@ import 'package:intl/intl.dart'; // For date formatting
 import 'package:swiftlogistics/models/order_model.dart';
 
 class OrderDetailsPage extends StatelessWidget {
+  const OrderDetailsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final order = ModalRoute.of(context)!.settings.arguments as Order;
@@ -39,16 +41,16 @@ class OrderDetailsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Total Amount:', style: TextStyle(fontSize: 16)),
+                        const Text('Total Amount:', style: TextStyle(fontSize: 16)),
                         Text(currencyFormat.format(order.totalAmount),
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Order Status:', style: TextStyle(fontSize: 16)),
+                        const Text('Order Status:', style: TextStyle(fontSize: 16)),
                         Text(order.orderStatus ?? 'Pending',
                             style: TextStyle(
                               fontSize: 16,
@@ -63,9 +65,9 @@ class OrderDetailsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Order Date:', style: TextStyle(fontSize: 16)),
+                        const Text('Order Date:', style: TextStyle(fontSize: 16)),
                         Text(dateFormat.format(order.createdAt),
-                            style: TextStyle(fontSize: 16)),
+                            style: const TextStyle(fontSize: 16)),
                       ],
                     ),
                   ],
@@ -100,7 +102,7 @@ class OrderDetailsPage extends StatelessWidget {
                     subtitle: Text('Quantity: ${item.quantity}'),
                     trailing: Text(
                       currencyFormat.format(item.unitPrice * item.quantity),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   );
                 },

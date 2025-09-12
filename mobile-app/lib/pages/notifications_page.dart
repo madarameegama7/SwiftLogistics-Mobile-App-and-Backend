@@ -456,7 +456,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 onChanged: (value) {},
               ),
               const SizedBox(height: 16),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),

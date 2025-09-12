@@ -11,8 +11,8 @@ class CartItemModelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fakeName = "Product #${item.productId}";
-    final fakeImage = "assets/images/default.jpg";
-    final fakePrice = 999; // Replace with actual logic if needed
+    const fakeImage = "assets/images/default.jpg";
+    const fakePrice = 999; // Replace with actual logic if needed
 
     return SizedBox(
       height: 125,

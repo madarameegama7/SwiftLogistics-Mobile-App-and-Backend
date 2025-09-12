@@ -109,7 +109,7 @@ class _PackageDeliveryPageState extends State<PackageDeliveryPage> {
             const SizedBox(height: 16),
 
             // Delivered Button
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => _selectStatus('delivered'),
@@ -140,7 +140,7 @@ class _PackageDeliveryPageState extends State<PackageDeliveryPage> {
             const SizedBox(height: 12),
 
             // Failed Button
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => _selectStatus('failed'),
@@ -265,7 +265,7 @@ class _PackageDeliveryPageState extends State<PackageDeliveryPage> {
             const SizedBox(height: 32),
 
             // Submit Button
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: selectedStatus.isNotEmpty ? () => _submitDelivery() : null,
@@ -385,7 +385,7 @@ class _PackageDeliveryPageState extends State<PackageDeliveryPage> {
               _buildDetailRow('Special Instructions', 'Handle with care - Fragile items'),
               _buildDetailRow('Delivery Window', '09:00 AM - 06:00 PM'),
               const SizedBox(height: 16),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),

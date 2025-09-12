@@ -297,7 +297,7 @@ class _ProofOfDeliveryPageState extends State<ProofOfDeliveryPage> {
             const SizedBox(height: 24),
 
             // Submit Button
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _canSubmit() ? () => _submitProof() : null,

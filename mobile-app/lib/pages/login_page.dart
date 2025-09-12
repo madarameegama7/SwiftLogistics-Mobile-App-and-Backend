@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -21,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
                 
@@ -30,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text.rich(
                   TextSpan(
                     text: 'Swift ',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     children: [
                       TextSpan(
                         text: 'Logistics',
@@ -54,16 +56,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Email Field
                 TextField(
                   controller: _emailController,
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Email address',
-                    labelStyle: TextStyle(color: Colors.green),
+                    labelStyle: const TextStyle(color: Colors.green),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -75,18 +77,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _passwordController,
                   obscureText: _obscurePassword,
-                  style: TextStyle(color: Colors.black), // 👈 text color
+                  style: const TextStyle(color: Colors.black), // 👈 text color
                   decoration: InputDecoration(
                     labelText: 'Password',
                     labelStyle:
-                        TextStyle(color: Colors.green), // 👈 label color
+                        const TextStyle(color: Colors.green), // 👈 label color
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       // 👈 match email field
-                      borderSide: BorderSide(color: Colors.green, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     suffixIcon: IconButton(
@@ -141,18 +143,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         print('Login failed, showing snackbar...');
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Invalid email or password')),
+                          const SnackBar(content: Text('Invalid email or password')),
                         );
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue.shade600,
-                      padding: EdgeInsets.symmetric(vertical: 14),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: Text('Log in',
+                    child: const Text('Log in',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -162,11 +164,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
 
                 // Or login with
-                Row(
+                const Row(
                   children: [
                     Expanded(child: Divider()),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text('Or Login with'),
                     ),
                     Expanded(child: Divider()),
@@ -179,9 +181,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _socialIcon('assets/facebook.png'),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     _socialIcon('assets/google.png'),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     _socialIcon('assets/apple.png'),
                   ],
                 ),
@@ -191,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account? "),
+                    const Text("Don't have an account? "),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(

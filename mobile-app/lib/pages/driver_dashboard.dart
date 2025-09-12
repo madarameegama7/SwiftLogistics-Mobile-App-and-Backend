@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:badges/badges.dart' as badges;
 
 class DriverDashboard extends StatelessWidget {
   const DriverDashboard({super.key});
