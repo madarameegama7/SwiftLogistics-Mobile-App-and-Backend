@@ -1,0 +1,13 @@
+{
+  "name": "orchestrator",
+  "version": "1.0.0",
+  "main": "orchestrator.js",
+  "scripts": {
+    "start": "node orchestrator.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.9",
+    "axios": "^1.5.0",
+    "soap": "^0.42.0"
+  }
+}

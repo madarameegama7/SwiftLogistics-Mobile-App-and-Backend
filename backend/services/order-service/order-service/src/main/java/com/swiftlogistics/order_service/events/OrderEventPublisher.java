@@ -15,8 +15,8 @@ public class OrderEventPublisher {
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE,
                 RabbitMQConfig.ROUTING_KEY,
-                event
+                event  // now sent as JSON
         );
-        System.out.println("Published OrderCreatedEvent: " + event);
+        System.out.println("✅ Published OrderCreatedEvent as JSON: " + event);
     }
 }

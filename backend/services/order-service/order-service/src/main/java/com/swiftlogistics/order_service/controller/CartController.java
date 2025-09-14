@@ -1,5 +1,6 @@
 package com.swiftlogistics.order_service.controller;
 
+import com.swiftlogistics.order_service.dto.request.UpdateStatusRequest;
 import com.swiftlogistics.order_service.model.Cart;
 import com.swiftlogistics.order_service.model.Order;
 import com.swiftlogistics.order_service.model.CartItem;
@@ -12,8 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import com.swiftlogistics.order_service.security.JwtUtil;
 import org.springframework.http.HttpStatus;
 
-
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/order")
@@ -50,14 +51,13 @@ public class CartController {
         return ResponseEntity.badRequest().build();
     }
 
-
-
     @GetMapping("/getCartByCartId/{cartId}")
     public ResponseEntity<Cart> getCartByCartId(@PathVariable int cartId) {
         return cartService.getCartByCartId(cartId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @GetMapping("/getCartByUserId/{userId}")
     public ResponseEntity<List<Cart>> getCartByUserId(@PathVariable int userId) {
         List<Cart> carts = cartService.getCartByUserId(userId);
@@ -66,6 +66,7 @@ public class CartController {
         }
         return ResponseEntity.ok(carts); // 200 OK with list
     }
+
     @PostMapping("/checkout/{cartId}")
     public ResponseEntity<Order> checkoutCart(@PathVariable int cartId) {
         try {
@@ -79,6 +80,33 @@ public class CartController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+  @PutMapping("/updateStatus/{orderId}")
+public ResponseEntity<Order> updateOrderStatus(
+        @PathVariable int orderId,
+        @RequestBody UpdateStatusRequest request) {
+    try {
+        Order updatedOrder = orderService.updateOrderStatus(orderId, request.getStatus());
+        return ResponseEntity.ok(updatedOrder);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
+
+    @GetMapping("/")
+    public ResponseEntity<List<Map<String, Object>>> getOrdersWithHistory(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorizationHeader.substring(7);
+        int userId = Integer.parseInt(jwtUtil.extractUserId(token));
+
+        List<Map<String, Object>> ordersWithHistory = orderService.getOrdersWithStatusHistory(userId);
+        if (ordersWithHistory.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ordersWithHistory);
     }
 
 

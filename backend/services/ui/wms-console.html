@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WMS Console - SwiftTrack</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    button { padding: 5px 10px; margin: 2px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>WMS Console</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Vehicle</th>
+        <th>Last Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="wms-table-body"></tbody>
+  </table>
+
+  <script>
+    async function fetchWmsData() {
+      try {
+        // Replace with your mock WMS API endpoint
+        const res = await fetch('http://localhost:3003/wms-mock/orders');
+        const orders = await res.json();
+
+        const tbody = document.getElementById('wms-table-body');
+        tbody.innerHTML = '';
+
+        orders.forEach(order => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${order.orderId}</td>
+            <td>${order.vehicle}</td>
+            <td>${order.lastStatus}</td>
+            <td>
+              <button onclick="updateStatus(${order.orderId}, 'Ready')">Ready</button>
+              <button onclick="updateStatus(${order.orderId}, 'Loaded')">Loaded</button>
+              <button onclick="updateStatus(${order.orderId}, 'Dispatched')">Dispatched</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error fetching WMS data:', err);
+      }
+    }
+
+    async function updateStatus(orderId, status) {
+      try {
+        await fetch(`http://localhost:3003/wms-mock/orders/${orderId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        fetchWmsData(); // refresh table
+      } catch (err) {
+        console.error('Error updating status:', err);
+      }
+    }
+
+    fetchWmsData();
+    setInterval(fetchWmsData, 5000); // refresh every 5 seconds
+  </script>
+</body>
+</html>

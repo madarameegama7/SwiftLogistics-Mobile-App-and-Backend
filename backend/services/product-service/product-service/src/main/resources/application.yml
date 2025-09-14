@@ -17,7 +17,6 @@ jwt:
 
 server:
   port: 8082
-
 eureka:
   client:
     service-url:

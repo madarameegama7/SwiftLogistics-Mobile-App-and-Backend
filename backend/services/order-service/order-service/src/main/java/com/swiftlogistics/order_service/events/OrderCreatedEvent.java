@@ -1,8 +1,6 @@
 package com.swiftlogistics.order_service.events;
 
-import java.io.Serializable;
-
-public class OrderCreatedEvent implements Serializable {
+public class OrderCreatedEvent {
     private Long orderId;
     private String customerName;
     private String status;
@@ -15,7 +13,6 @@ public class OrderCreatedEvent implements Serializable {
         this.status = status;
     }
 
-    // Getters and Setters
     public Long getOrderId() { return orderId; }
     public void setOrderId(Long orderId) { this.orderId = orderId; }
 
