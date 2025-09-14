@@ -7,7 +7,7 @@ const server = net.createServer(socket => {
     socket.on('data', data => {
         const msg = data.toString();
         console.log('Received:', msg);
-        // Send a dummy acknowledgment
+        // Send an acknowledgment
         socket.write(`ACK:${msg}`);
     });
 

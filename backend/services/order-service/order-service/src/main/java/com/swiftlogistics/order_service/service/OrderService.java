@@ -5,6 +5,7 @@ import com.swiftlogistics.order_service.model.*;
 import com.swiftlogistics.order_service.repository.CartRepository;
 import com.swiftlogistics.order_service.repository.CartItemRepository;
 import com.swiftlogistics.order_service.repository.OrderRepository;
+import com.swiftlogistics.order_service.repository.OrderStatusHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,6 +26,9 @@ public class OrderService {
     private CartItemRepository cartItemRepository;
     @Autowired
     private OrderEventPublisher orderEventPublisher;
+    @Autowired
+    private OrderStatusHistoryRepository orderStatusHistoryRepository;
+
 
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
@@ -53,7 +57,7 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         double total = 0.0;
 
-        String productServiceUrl = "http://localhost:8080/api/product/id/";
+        String productServiceUrl = "http://localhost:8082/api/product/id/";
 
         for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
@@ -65,63 +69,91 @@ public class OrderService {
                         productServiceUrl + cartItem.getProductId(),
                         ProductResponseDTO.class
                 );
-                System.out.println("Fetched product: " + product);
 
-                if (product != null) {
+                if (product != null && product.getProductPrice() > 0) {
                     double unitPrice = product.getProductPrice();
                     orderItem.setUnitPrice(unitPrice);
                     total += unitPrice * orderItem.getQuantity();
                 } else {
-                    orderItem.setUnitPrice(0.0);
+                    System.out.println("⚠️ Product not found or price missing for productId=" + cartItem.getProductId());
+                    orderItem.setUnitPrice(0.0); // fallback
                 }
             } catch (Exception e) {
+                System.out.println("⚠️ Failed to fetch product for productId=" + cartItem.getProductId());
                 e.printStackTrace();
-                orderItem.setUnitPrice(0.0);
+                orderItem.setUnitPrice(0.0); // fallback
             }
 
             orderItem.setOrder(order);
-            orderItem.setOrderStatus(OrderStatus.CREATED); // ✅ use CREATED instead of PENDING
+            orderItem.setOrderStatus(OrderStatus.CREATED);
             orderItems.add(orderItem);
         }
 
         order.setOrderItems(orderItems);
         order.setTotal(total);
-        order.setOrderStatus(OrderStatus.CREATED); // ✅ initial order status is CREATED
+        order.setOrderStatus(OrderStatus.CREATED);
 
         Order savedOrder = orderRepository.save(order);
 
-        // ✅ Publish OrderCreatedEvent to RabbitMQ
+        // Publish event
         OrderCreatedEvent event = new OrderCreatedEvent(
                 (long) savedOrder.getOrderId(),
                 "User-" + savedOrder.getUserId(),
-                savedOrder.getOrderStatus().name() // pass enum value e.g. "CREATED"
+                savedOrder.getOrderStatus().name()
         );
         orderEventPublisher.publishOrderCreated(event);
 
-        System.out.println("Order placed and published: " + event);
+        System.out.println("✅ Order placed: " + savedOrder);
+        return savedOrder;
+    }
+
+
+    // === Update order status (called by orchestrator) ===
+    public Order updateOrderStatus(int orderId, String status) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isEmpty()) {
+            throw new RuntimeException("Order not found with ID: " + orderId);
+        }
+
+        Order order = optionalOrder.get();
+
+        try {
+            OrderStatus newStatus = OrderStatus.valueOf(status);
+            order.setOrderStatus(newStatus);
+        } catch (IllegalArgumentException e) {
+            System.out.println("⚠️ Unknown enum value, storing as raw string");
+            order.setOrderStatus(OrderStatus.FAILED); // fallback
+        }
+
+        Order savedOrder = orderRepository.save(order);
+
+        // --- Record status history ---
+        OrderStatusHistory history = new OrderStatusHistory();
+        history.setOrderId(orderId);
+        history.setStatus(status);
+        orderStatusHistoryRepository.save(history);
+        System.out.println("📚 Recorded status in history: " + status);
 
         return savedOrder;
     }
 
-    // === Update order status (called by orchestrator) ===
-    public Order updateOrderStatus(int orderId, String status) {
-    Optional<Order> optionalOrder = orderRepository.findById(orderId);
-    if (optionalOrder.isEmpty()) {
-        throw new RuntimeException("Order not found with ID: " + orderId);
+    public List<Map<String, Object>> getOrdersWithStatusHistory(int userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Order order : orders) {
+            Map<String, Object> orderMap = new HashMap<>();
+            orderMap.put("order", order);
+
+            List<OrderStatusHistory> historyList = orderStatusHistoryRepository.findByOrderId(order.getOrderId());
+            orderMap.put("statusHistory", historyList);
+
+            result.add(orderMap);
+        }
+
+        return result;
     }
 
-    Order order = optionalOrder.get();
 
-    try {
-        OrderStatus newStatus = OrderStatus.valueOf(status); // Ensure it matches enum
-        order.setOrderStatus(newStatus);
-    } catch (IllegalArgumentException e) {
-        // If orchestrator sends plain string like "PROCESSED_BY_CMS", store as string instead
-        System.out.println("⚠️ Unknown enum value, storing as raw string");
-        order.setOrderStatus(OrderStatus.PENDING); // fallback
-    }
-
-    return orderRepository.save(order);
-}
 
 }

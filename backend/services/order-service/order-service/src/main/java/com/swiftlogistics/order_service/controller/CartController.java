@@ -95,5 +95,21 @@ public ResponseEntity<Order> updateOrderStatus(
     }
 }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Map<String, Object>>> getOrdersWithHistory(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String token = authorizationHeader.substring(7);
+        int userId = Integer.parseInt(jwtUtil.extractUserId(token));
+
+        List<Map<String, Object>> ordersWithHistory = orderService.getOrdersWithStatusHistory(userId);
+        if (ordersWithHistory.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ordersWithHistory);
+    }
+
+
+
 
 }

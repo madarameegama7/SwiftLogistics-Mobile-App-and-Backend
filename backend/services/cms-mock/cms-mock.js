@@ -13,7 +13,7 @@ const service = {
       },
       getClientInfo: function(args) {
         console.log("Client info requested:", args);
-        return { clientName: "Demo Client", clientId: args.clientId };
+        return { clientName: "Client", clientId: args.clientId };
       }
     }
   }
