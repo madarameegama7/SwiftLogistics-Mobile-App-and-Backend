@@ -5,8 +5,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.swiftlogistics.order_service.enums.OrderStatus;
-import com.swiftlogistics.order_service.enums.PaymentStatus;
-import com.swiftlogistics.order_service.enums.DeliveryStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @NoArgsConstructor
@@ -33,12 +31,6 @@ public class Order{
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
-
-    @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus;
 
     private String assignedDriver;
 

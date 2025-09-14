@@ -6,6 +6,8 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 
 @Configuration
 public class RabbitMQConfig {
@@ -27,5 +29,21 @@ public class RabbitMQConfig {
     @Bean
     public Binding binding(Queue orderQueue, DirectExchange orderExchange) {
         return BindingBuilder.bind(orderQueue).to(orderExchange).with(ROUTING_KEY);
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    // RabbitTemplate using JSON converter
+    @Bean
+    public RabbitTemplate rabbitTemplate(
+            org.springframework.amqp.rabbit.connection.ConnectionFactory connectionFactory,
+            Jackson2JsonMessageConverter jsonMessageConverter) {
+
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(jsonMessageConverter);
+        return template;
     }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "wms-mock",
+  "version": "1.0.0",
+  "main": "wms-mock.js",
+  "scripts": {
+    "start": "node wms-mock.js"
+  },
+  "dependencies": {}
+}

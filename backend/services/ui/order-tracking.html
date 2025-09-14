@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Tracking - SwiftTrack</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    .order-info, .route, .timeline { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    .timeline-item { margin-bottom: 5px; }
+    .status { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Order Tracking</h1>
+  
+  <div class="order-info">
+    <h2>Order Details</h2>
+    <p>Order ID: <span id="order-id"></span></p>
+    <p>Status: <span id="order-status"></span></p>
+    <p>Assigned Vehicle: <span id="vehicle-id"></span></p>
+  </div>
+
+  <div class="route">
+    <h2>Latest Route</h2>
+    <ul id="route-list"></ul>
+  </div>
+
+  <div class="timeline">
+    <h2>Order Timeline</h2>
+    <ul id="timeline-list"></ul>
+  </div>
+
+  <script>
+    const orderId = 583; // example order ID
+    const orderStatusEl = document.getElementById('order-status');
+    const orderIdEl = document.getElementById('order-id');
+    const vehicleIdEl = document.getElementById('vehicle-id');
+    const routeListEl = document.getElementById('route-list');
+    const timelineListEl = document.getElementById('timeline-list');
+
+    orderIdEl.textContent = orderId;
+
+    async function fetchOrderData() {
+      try {
+        // Replace URLs with your mock API endpoints
+        const orderRes = await fetch(`http://localhost:3000/mock-ros/order/${orderId}`);
+        const data = await orderRes.json();
+
+        orderStatusEl.textContent = data.status;
+        vehicleIdEl.textContent = data.vehicleId;
+
+        // Update route
+        routeListEl.innerHTML = '';
+        data.route.forEach(r => {
+          const li = document.createElement('li');
+          li.textContent = `${r.address} - ETA: ${r.estimatedTime}`;
+          routeListEl.appendChild(li);
+        });
+
+        // Update timeline
+        timelineListEl.innerHTML = '';
+        data.timeline.forEach(t => {
+          const li = document.createElement('li');
+          li.classList.add('timeline-item');
+          li.textContent = `${t.time} - ${t.event}`;
+          timelineListEl.appendChild(li);
+        });
+
+      } catch (err) {
+        console.error('Error fetching order data:', err);
+      }
+    }
+
+    fetchOrderData();
+    setInterval(fetchOrderData, 5000); // refresh every 5 seconds
+  </script>
+</body>
+</html>

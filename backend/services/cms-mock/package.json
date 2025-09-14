@@ -1,0 +1,13 @@
+{
+  "name": "cms-mock",
+  "version": "1.0.0",
+  "description": "Mock CMS SOAP service for SwiftLogistics",
+  "main": "cms-mock.js",
+  "scripts": {
+    "start": "node cms-mock.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "soap": "^0.42.0"
+  }
+}

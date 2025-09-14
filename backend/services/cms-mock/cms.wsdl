@@ -1,0 +1,89 @@
+<definitions name="CMSService"
+             targetNamespace="http://example.com/cms"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://example.com/cms"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <types>
+    <xsd:schema targetNamespace="http://example.com/cms">
+      <xsd:element name="createOrder">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="clientId" type="xsd:string"/>
+            <xsd:element name="orderDetails" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createOrderResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="status" type="xsd:string"/>
+            <xsd:element name="orderId" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="getClientInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="clientId" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getClientInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="clientName" type="xsd:string"/>
+            <xsd:element name="clientId" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <message name="createOrderRequest">
+    <part name="parameters" element="tns:createOrder"/>
+  </message>
+  <message name="createOrderResponse">
+    <part name="parameters" element="tns:createOrderResponse"/>
+  </message>
+
+  <message name="getClientInfoRequest">
+    <part name="parameters" element="tns:getClientInfo"/>
+  </message>
+  <message name="getClientInfoResponse">
+    <part name="parameters" element="tns:getClientInfoResponse"/>
+  </message>
+
+  <portType name="CMSPort">
+    <operation name="createOrder">
+      <input message="tns:createOrderRequest"/>
+      <output message="tns:createOrderResponse"/>
+    </operation>
+    <operation name="getClientInfo">
+      <input message="tns:getClientInfoRequest"/>
+      <output message="tns:getClientInfoResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="CMSBinding" type="tns:CMSPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="createOrder">
+      <soap:operation soapAction="createOrder"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+    <operation name="getClientInfo">
+      <soap:operation soapAction="getClientInfo"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+
+  <service name="CMSService">
+    <port name="CMSPort" binding="tns:CMSBinding">
+      <soap:address location="http://localhost:3001/cms"/>
+    </port>
+  </service>
+</definitions>
