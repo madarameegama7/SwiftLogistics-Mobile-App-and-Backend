@@ -1,0 +1,14 @@
+{
+  "name": "ros-mock",
+  "version": "1.0.0",
+  "description": "ROS mock service for SwiftLogistics",
+  "main": "roc-mock.js",
+  "scripts": {
+    "start": "node roc-mock.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "author": "",
+  "license": "ISC"
+}
