@@ -1,8 +1,6 @@
 package com.swiftlogistics.order_service.service;
 
 import com.swiftlogistics.order_service.enums.OrderStatus;
-import com.swiftlogistics.order_service.enums.PaymentStatus;
-import com.swiftlogistics.order_service.enums.DeliveryStatus;
 import com.swiftlogistics.order_service.model.*;
 import com.swiftlogistics.order_service.repository.CartRepository;
 import com.swiftlogistics.order_service.repository.CartItemRepository;
@@ -14,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.swiftlogistics.order_service.dto.response.ProductResponseDTO;
 import com.swiftlogistics.order_service.events.OrderEventPublisher;
 import com.swiftlogistics.order_service.events.OrderCreatedEvent;
-import java.time.LocalDateTime;
+
 import java.util.*;
 
 @Service
@@ -25,14 +23,13 @@ public class OrderService {
     private RestTemplate restTemplate;
     @Autowired
     private CartItemRepository cartItemRepository;
-
     @Autowired
     private OrderEventPublisher orderEventPublisher;
-
 
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
 
+    // === Checkout cart and place order ===
     public Order checkoutCart(int cartId) {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (optionalCart.isEmpty()) {
@@ -49,7 +46,8 @@ public class OrderService {
         return placeOrder(cartItems, cart.getUserId());
     }
 
-    public Order placeOrder(List<CartItem> cartItems,  int userId) {
+    // === Place order ===
+    public Order placeOrder(List<CartItem> cartItems, int userId) {
         Order order = new Order();
         order.setUserId(userId);
         List<OrderItem> orderItems = new ArrayList<>();
@@ -82,25 +80,48 @@ public class OrderService {
             }
 
             orderItem.setOrder(order);
-            orderItem.setOrderStatus(OrderStatus.PENDING);
+            orderItem.setOrderStatus(OrderStatus.CREATED); // ✅ use CREATED instead of PENDING
             orderItems.add(orderItem);
         }
 
         order.setOrderItems(orderItems);
         order.setTotal(total);
-        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderStatus(OrderStatus.CREATED); // ✅ initial order status is CREATED
 
         Order savedOrder = orderRepository.save(order);
 
-        // Publish OrderCreatedEvent
+        // ✅ Publish OrderCreatedEvent to RabbitMQ
         OrderCreatedEvent event = new OrderCreatedEvent(
                 (long) savedOrder.getOrderId(),
                 "User-" + savedOrder.getUserId(),
-                "CREATED"
+                savedOrder.getOrderStatus().name() // pass enum value e.g. "CREATED"
         );
         orderEventPublisher.publishOrderCreated(event);
 
-        return savedOrder;
+        System.out.println("Order placed and published: " + event);
 
+        return savedOrder;
     }
+
+    // === Update order status (called by orchestrator) ===
+    public Order updateOrderStatus(int orderId, String status) {
+    Optional<Order> optionalOrder = orderRepository.findById(orderId);
+    if (optionalOrder.isEmpty()) {
+        throw new RuntimeException("Order not found with ID: " + orderId);
+    }
+
+    Order order = optionalOrder.get();
+
+    try {
+        OrderStatus newStatus = OrderStatus.valueOf(status); // Ensure it matches enum
+        order.setOrderStatus(newStatus);
+    } catch (IllegalArgumentException e) {
+        // If orchestrator sends plain string like "PROCESSED_BY_CMS", store as string instead
+        System.out.println("⚠️ Unknown enum value, storing as raw string");
+        order.setOrderStatus(OrderStatus.PENDING); // fallback
+    }
+
+    return orderRepository.save(order);
+}
+
 }
